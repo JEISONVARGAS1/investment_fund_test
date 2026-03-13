@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:investment_fund/core/widget/loading_page.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
 import 'package:investment_fund/feature/lobby/provider/lobby_controller.dart';
+import 'package:investment_fund/feature/lobby/ui/widget/custom_bottom_navigation.dart';
+
 class LobbyPage extends ConsumerStatefulWidget {
   const LobbyPage({super.key});
 
@@ -13,7 +15,6 @@ class LobbyPage extends ConsumerStatefulWidget {
 
 class _LobbyPageState extends ConsumerState<LobbyPage> {
   late final PageController _pageController;
-  
 
   @override
   void initState() {
@@ -24,11 +25,25 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
     );
   }
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
+  void _onItemTapped(int index) {
+    ref.read(lobbyControllerProvider.notifier).changeIndexPage(index);
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(lobbyControllerProvider).value!;
+    final provider = ref.read(lobbyControllerProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
@@ -40,15 +55,42 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
               child: PageView(
                 controller: _pageController,
                 physics: const BouncingScrollPhysics(),
+                onPageChanged: provider.changeIndexPage,
                 children: const [
                   HomePage(),
+                  _PlaceholderPage(title: 'Stocks'),
+                  _PlaceholderPage(title: 'Noticias'),
+                  _PlaceholderPage(title: 'Perfil'),
                 ],
               ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigation(
+        onTap: _onItemTapped,
+        currentIndex: state.indexPage,
+      ),
     );
   }
+}
 
+class _PlaceholderPage extends StatelessWidget {
+  const _PlaceholderPage({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
 }

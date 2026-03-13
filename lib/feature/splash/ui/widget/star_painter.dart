@@ -49,7 +49,7 @@ class StarsPainter extends CustomPainter {
         canvas,
         center,
         currentSize,
-        AppColors.blueLight.withOpacity(0.6 + 0.4 * scale),
+        AppColors.primary.withOpacity(0.6 + 0.4 * scale),
       );
     }
   }
