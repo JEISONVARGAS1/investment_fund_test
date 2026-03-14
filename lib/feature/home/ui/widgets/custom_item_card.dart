@@ -1,30 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/fund_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 
 class CustomItemCard extends StatelessWidget {
-  final String title;
-  final String price;
-  final IconData icon;
-  final String subtitle;
-  final String percentage;
-  final Function()? onTap;
-  const CustomItemCard({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.price,
-    required this.subtitle,
-    required this.percentage,
-    this.onTap,
-  });
+  final FundModel fund;
+  final Function(String name)? onTap;
+  const CustomItemCard({super.key, required this.fund, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      onTap: onTap,
+      onTap: () => onTap?.call(fund.name),
       isColumn: false,
       padding: AppSpacing.sm,
       color: AppColors.background.withOpacity(0.8),
@@ -32,7 +21,7 @@ class CustomItemCard extends StatelessWidget {
         Container(
           padding: .all(10),
           decoration: BoxDecoration(shape: .circle, color: AppColors.primary),
-          child: Icon(icon, color: AppColors.background),
+          child: Icon(fund.iconData, color: AppColors.background),
         ),
         SizedBox(width: AppSpacing.sm),
         Column(
@@ -40,10 +29,10 @@ class CustomItemCard extends StatelessWidget {
           crossAxisAlignment: .start,
           children: [
             Text(
-              title,
+              fund.name,
               style: AppTypography.h6.copyWith(color: AppColors.textPrimary),
             ),
-            Text(subtitle, style: AppTypography.bodySmall),
+            Text(fund.type, style: AppTypography.bodySmall),
           ],
         ),
         Spacer(),
@@ -52,12 +41,12 @@ class CustomItemCard extends StatelessWidget {
           mainAxisAlignment: .center,
           children: [
             Text(
-              price,
+              fund.minInvestment.toString(),
               style: AppTypography.bodyMedium.copyWith(
                 color: AppColors.textPrimary,
               ),
             ),
-            Text(percentage, style: AppTypography.bodySmall),
+            Text(fund.profitProbability, style: AppTypography.bodySmall),
           ],
         ),
       ],

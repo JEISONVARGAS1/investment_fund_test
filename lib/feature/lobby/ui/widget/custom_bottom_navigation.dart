@@ -22,10 +22,6 @@ class CustomBottomNavigation extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Stocks'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.article_outlined),
-          label: 'Noticias',
-        ),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
       ],
     );

@@ -6,14 +6,17 @@ import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
+import 'package:investment_fund/core/widget/custom_search.dart';
+import 'package:investment_fund/core/widget/investment_charts.dart';
 import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/core/widget/responsive_container.dart';
+import 'package:investment_fund/core/widget/custom_parent_container.dart';
 import 'package:investment_fund/feature/home/provider/home_controller.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card.dart';
+import 'package:investment_fund/feature/home/ui/widgets/custom_web_header.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_mobil_header.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_scroll_view_header.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card_gridview.dart';
-import 'package:investment_fund/feature/home/ui/widgets/custom_web_header.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -26,14 +29,16 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final provider = ref.read(homeControllerProvider.notifier);
-      provider.initPage(context);
-    });
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => ref.read(homeControllerProvider.notifier).initPage(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(homeControllerProvider).value!;
+    final provider = ref.read(homeControllerProvider.notifier);
+
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -49,69 +54,79 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Padding(
                 padding: .all(context.horizontalPadding),
                 child: Column(
+                  spacing: AppSpacing.lg,
                   crossAxisAlignment: .start,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
-                    CustomCard(
+                    CustomSearch(),
+                    CustomParentContainer(
+                      crossAxisAlignment: .start,
+                      mainAxisAlignment: .spaceBetween,
                       children: [
-                        Text(
-                          'Mis bienes',
-                          style: AppTypography.h3.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Column(
-                          children: List.generate(
-                            5,
-                            (index) => CustomItemCard(
-                              title: 'Apple',
-                              icon: Icons.apple,
-                              subtitle: '10 unit',
-                              price: '\$2.300.00',
-                              percentage: '+\$10.00 (10%)',
-                              onTap: () => context.push('/investment/Apple'),
+                        CustomCard(
+                          children: [
+                            Text(
+                              'Mis bienes',
+                              style: AppTypography.h3.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
+                            Column(
+                              children: List.generate(
+                                state.filteredInvestmentsFunds.length,
+                                (index) {
+                                  final fund =
+                                      state.filteredInvestmentsFunds[index];
+                                  return CustomItemCardGridview(
+                                    fund: fund,
+                                    onTap: (name) =>
+                                        context.push('/investment/$name'),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomCard(
+                          children: [
+                            Text(
+                              'Choices Of Analysts',
+                              style: AppTypography.h3.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                return GridView.builder(
+                                  padding: .zero,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      state.filteredInvestmentsFunds.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 1,
+                                        crossAxisCount:
+                                            context.gridCrossAxisCount,
+                                      ),
+                                  itemBuilder: (context, index) =>
+                                      CustomItemCardGridview(
+                                        fund: state
+                                            .filteredInvestmentsFunds[index],
+                                        onTap: (name) =>
+                                            context.push('/investment/$name'),
+                                      ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    SizedBox(height: AppSpacing.lg),
-                    CustomCard(
-                      children: [
-                        Text(
-                          'Choices Of Analysts',
-                          style: AppTypography.h3.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            final crossAxisCount = context.gridCrossAxisCount;
-                            return GridView.builder(
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: crossAxisCount,
-                                    childAspectRatio: 1.1,
-                                  ),
-                              itemBuilder: (context, index) =>
-                                  CustomItemCardGridview(
-                                    title: 'Apple',
-                                    icon: Icons.apple,
-                                    subtitle: '10 unit',
-                                    percentage: '+\$10.00 (10%)',
-                                    onTap: () =>
-                                        context.push('/investment/Apple'),
-                                  ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+
+                    InvestmentCharts(),
                   ],
                 ),
               ),

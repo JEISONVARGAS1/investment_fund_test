@@ -1,15 +1,15 @@
   import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:investment_fund/core/model/fund_model.dart';
 
-part 'home_state.freezed.dart';
+part 'stock_state.freezed.dart';
 
 @freezed
-sealed class HomeState with _$HomeState {
-  const factory HomeState({
+sealed class StockState with _$StockState {
+  const factory StockState({
     @Default(false) bool isLoading,
     @Default([]) List<FundModel> investmentsFunds,
     @Default([]) List<FundModel> filteredInvestmentsFunds,
-  }) = HomeStateData;
+  }) = StockStateData;
 
-  factory HomeState.init() => const HomeState();
+  factory StockState.init() => const StockState();
 }

@@ -5,6 +5,7 @@ import 'package:investment_fund/core/widget/loading_page.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
 import 'package:investment_fund/feature/stocks/ui/stocks_page.dart';
 import 'package:investment_fund/feature/profile/ui/profile_page.dart';
+import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/feature/lobby/provider/lobby_controller.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_bottom_navigation.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_navigation_rail.dart';
@@ -34,7 +35,7 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
       backgroundColor: Colors.grey.shade50,
       body: LoadingPage(
         isLoading: state.isLoading,
-        child: state.isDesktop
+        child: context.isDesktop
             ? Row(
                 children: [
                   CustomNavigationRail(
@@ -49,7 +50,6 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
                       children: const [
                         HomePage(),
                         StocksPage(),
-                        _PlaceholderPage(title: 'Noticias'),
                         ProfilePage(),
                       ],
                     ),
@@ -63,7 +63,6 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
                 children: const [
                   HomePage(),
                   StocksPage(),
-                  _PlaceholderPage(title: 'Noticias'),
                   ProfilePage(),
                 ],
               ),
@@ -74,26 +73,6 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
               currentIndex: state.indexPage,
               onTap: provider.handledChangeIndexPage,
             ),
-    );
-  }
-}
-
-class _PlaceholderPage extends StatelessWidget {
-  const _PlaceholderPage({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: Colors.black87,
-        ),
-      ),
     );
   }
 }

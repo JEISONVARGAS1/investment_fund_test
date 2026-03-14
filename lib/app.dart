@@ -4,7 +4,6 @@ import 'package:investment_fund/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:investment_fund/core/theme/app_theme.dart';
 import 'package:investment_fund/l10n/app_localizations.dart';
-import 'package:investment_fund/core/initializer/onstart_widget.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -15,7 +14,7 @@ class App extends ConsumerWidget {
     ErrorWidget.builder = (FlutterErrorDetails details) {
       return AppErrorWidget(error: details);
     };
-    
+
     return Builder(
       builder: (context) {
         return MaterialApp.router(
@@ -32,12 +31,6 @@ class App extends ConsumerWidget {
             }
             return const Locale('es');
           },
-          builder: (context, child) => Initializer(
-            onReady: child!,
-            onLoading: const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            ),
-          ),
         );
       },
     );
@@ -52,18 +45,22 @@ class AppErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const .all(16),
       color: Colors.orangeAccent,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           Text(
             AppLocalizations.of(context)?.errorOops ?? 'Oops!',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
-            AppLocalizations.of(context)?.errorSomethingWentWrong ?? 'Sorry, something went wrong',
+            AppLocalizations.of(context)?.errorSomethingWentWrong ??
+                'Sorry, something went wrong',
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 8),

@@ -8,6 +8,7 @@ import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/feature/profile/provider/profile_controller.dart';
+import 'package:investment_fund/feature/profile/ui/widgets/custom_web_profile_header.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/profile_menu_item.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/custom_small_card_item.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_scroll_view_header.dart';
@@ -24,9 +25,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) => ref.read(profileControllerProvider.notifier).initPage(),
-    );
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final provider = ref.read(profileControllerProvider.notifier);
+      provider.initPage();
+    });
   }
 
   @override
@@ -39,7 +41,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         slivers: [
           CustomScrollViewHeader(
             isDesktop: context.isDesktop,
-            child: CustomMobilProfileHeader(),
+            child: context.isDesktop
+                ? CustomWebProfileHeader()
+                : CustomMobilProfileHeader(),
           ),
           SliverToBoxAdapter(
             child: ResponsiveContainer(

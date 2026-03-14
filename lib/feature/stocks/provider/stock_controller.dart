@@ -3,10 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:investment_fund/core/data/provider/global_controller.dart';
 import 'package:investment_fund/feature/home/provider/model/home_state.dart';
 
-part 'home_controller.g.dart';
+part 'stock_controller.g.dart';
 
 @riverpod
-class HomeController extends _$HomeController {
+class StockController extends _$StockController {
   @override
   FutureOr<HomeState> build() {
     return HomeState.init();

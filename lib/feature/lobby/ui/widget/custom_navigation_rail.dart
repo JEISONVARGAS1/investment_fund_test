@@ -30,9 +30,7 @@ class CustomNavigationRail extends StatelessWidget {
       child: Column(
         children: [
           _buildHeader(),
-          Expanded(
-            child: _buildNavItems(),
-          ),
+          Expanded(child: _buildNavItems()),
           _buildUserSection(),
         ],
       ),
@@ -42,31 +40,29 @@ class CustomNavigationRail extends StatelessWidget {
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: .all(AppSpacing.lg),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          end: Alignment.topRight,
+          begin: Alignment.bottomLeft,
           colors: [
-            AppColors.primary,
-            AppColors.primaryDark,
             AppColors.secondaryDark,
+            AppColors.primaryDark,
+            AppColors.primary,
           ],
         ),
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(AppSpacing.radiusXl),
-        ),
+        borderRadius: .only(bottomLeft: .circular(AppSpacing.radiusXl)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(AppSpacing.sm),
+                padding: .all(AppSpacing.sm),
                 decoration: BoxDecoration(
                   color: AppColors.background.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                  borderRadius: .circular(AppSpacing.radiusSm),
                 ),
                 child: const Icon(
                   Icons.trending_up_rounded,
@@ -101,7 +97,6 @@ class CustomNavigationRail extends StatelessWidget {
     const destinations = [
       _NavItem(icon: Icons.home_rounded, label: 'Home'),
       _NavItem(icon: Icons.bar_chart_rounded, label: 'Stocks'),
-      _NavItem(icon: Icons.article_outlined, label: 'Noticias'),
       _NavItem(icon: Icons.person_rounded, label: 'Perfil'),
     ];
 
@@ -134,19 +129,19 @@ class CustomNavigationRail extends StatelessWidget {
 
   Widget _buildUserSection() {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      margin: const EdgeInsets.all(AppSpacing.md),
+      padding: .all(AppSpacing.md),
+      margin: .all(AppSpacing.md),
       decoration: BoxDecoration(
         color: AppColors.background.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        borderRadius: .circular(AppSpacing.radiusMd),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppSpacing.sm),
+            padding: .all(AppSpacing.sm),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
+              shape: .circle,
             ),
             child: Icon(
               Icons.person_rounded,
@@ -157,8 +152,8 @@ class CustomNavigationRail extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: .min,
+              crossAxisAlignment: .start,
               children: [
                 Text(
                   'Usuario',
@@ -240,7 +235,9 @@ class _NavTile extends StatelessWidget {
                 Icon(
                   icon,
                   size: 22,
-                  color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textSecondary,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
