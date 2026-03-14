@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:investment_fund/core/widget/page_not_found.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
+import 'package:investment_fund/feature/investment_detail/ui/investment_detail_page.dart';
 import 'package:investment_fund/feature/lobby/ui/lobby_page.dart';
 import 'package:investment_fund/feature/splash/ui/splash_page.dart';
 
@@ -27,6 +28,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: 'home',
         path: '/home',
         pageBuilder: (context, state) => buildPageWithTransition(HomePage()),
+      ),
+      GoRoute(
+        name: 'investment_detail',
+        path: '/investment/:assetName',
+        pageBuilder: (context, state) {
+          final assetName = state.pathParameters['assetName'] ?? 'Apple';
+          return buildPageWithTransition(
+            InvestmentDetailPage(assetName: assetName),
+          );
+        },
       ),
 
       GoRoute(

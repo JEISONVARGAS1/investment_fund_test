@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:investment_fund/core/widget/loading_page.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
+import 'package:investment_fund/feature/profile/ui/profile_page.dart';
 import 'package:investment_fund/feature/lobby/provider/lobby_controller.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_bottom_navigation.dart';
 
@@ -60,7 +61,7 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
                   HomePage(),
                   _PlaceholderPage(title: 'Stocks'),
                   _PlaceholderPage(title: 'Noticias'),
-                  _PlaceholderPage(title: 'Perfil'),
+                  ProfilePage(),
                 ],
               ),
             ),

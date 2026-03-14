@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
+import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/feature/home/provider/home_controller.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_header.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card.dart';
+import 'package:investment_fund/feature/home/ui/widgets/custom_item_card_gridview.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -87,18 +90,47 @@ class _HomePageState extends ConsumerState<HomePage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-
                       Column(
                         children: List.generate(
-                          10,
+                          5,
                           (index) => CustomItemCard(
-                            onTap: () {},
                             title: 'Apple',
                             icon: Icons.apple,
                             subtitle: '10 unit',
                             price: '\$2.300.00',
                             percentage: '+\$10.00 (10%)',
+                            onTap: () => context.push('/investment/Apple'),
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: AppSpacing.lg),
+                  CustomCard(
+                    children: [
+                      Text(
+                        'Choices Of Analysts',
+                        style: AppTypography.h3.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      GridView.builder(
+                        itemCount: 5,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemBuilder: (context, index) => CustomItemCardGridview(
+                          title: 'Apple',
+                          icon: Icons.apple,
+                          subtitle: '10 unit',
+                          percentage: '+\$10.00 (10%)',
+                          onTap: () => context.push('/investment/Apple'),
                         ),
                       ),
                     ],

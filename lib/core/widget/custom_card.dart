@@ -6,6 +6,8 @@ class CustomCard extends StatelessWidget {
   final double padding;
   final Function()? onTap;
   final List<Widget> children;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   const CustomCard({
     super.key,
@@ -14,6 +16,8 @@ class CustomCard extends StatelessWidget {
     this.padding = 16,
     this.isColumn = true,
     required this.children,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   @override
@@ -29,14 +33,13 @@ class CustomCard extends StatelessWidget {
           padding: .all(padding),
           child: isColumn
               ? Column(
-                  mainAxisSize: .min,
-                  mainAxisAlignment: .start,
-                  crossAxisAlignment: .start,
+                  mainAxisAlignment: mainAxisAlignment ?? .start,
+                  crossAxisAlignment: crossAxisAlignment ?? .start,
                   children: children,
                 )
               : Row(
-                  crossAxisAlignment: .start,
-                  mainAxisAlignment: .start,
+                  crossAxisAlignment: crossAxisAlignment ?? .start,
+                  mainAxisAlignment: mainAxisAlignment ?? .start,
                   children: children,
                 ),
         ),
