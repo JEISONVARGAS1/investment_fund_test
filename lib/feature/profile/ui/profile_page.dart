@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
+import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_header.dart';
 import 'package:investment_fund/feature/profile/provider/profile_controller.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/custom_small_card_item.dart';
@@ -83,11 +85,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ],
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const .all(8),
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
+            child: ResponsiveContainer(
+              child: Padding(
+                padding: EdgeInsets.all(
+                  AppBreakpoints.horizontalPadding(context),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Row(
                     mainAxisAlignment: .spaceBetween,
                     children: [
@@ -181,6 +186,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
           ),
+        ),
         ],
       ),
     );

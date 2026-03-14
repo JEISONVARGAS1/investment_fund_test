@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
+import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card_gridview.dart';
 
@@ -15,70 +17,84 @@ class StocksPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomCard(
-                  children: [
-                    Text(
-                      'Mis acciones',
-                      style: AppTypography.h3.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
+          child: ResponsiveContainer(
+            child: Padding(
+              padding: EdgeInsets.all(
+                AppBreakpoints.horizontalPadding(context),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomCard(
+                    children: [
+                      Text(
+                        'Mis acciones',
+                        style: AppTypography.h3.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    Column(
-                      children: List.generate(
-                        5,
-                        (index) => CustomItemCard(
-                          title: _stocksData[index].title,
-                          icon: _stocksData[index].icon,
-                          subtitle: _stocksData[index].subtitle,
-                          price: _stocksData[index].price,
-                          percentage: _stocksData[index].percentage,
-                          onTap: () => context.push(
-                            '/investment/${_stocksData[index].title}',
+                      Column(
+                        children: List.generate(
+                          5,
+                          (index) => CustomItemCard(
+                            title: _stocksData[index].title,
+                            icon: _stocksData[index].icon,
+                            subtitle: _stocksData[index].subtitle,
+                            price: _stocksData[index].price,
+                            percentage: _stocksData[index].percentage,
+                            onTap: () => context.push(
+                              '/investment/${_stocksData[index].title}',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: AppSpacing.lg),
-                CustomCard(
-                  children: [
-                    Text(
-                      'Tendencias del mercado',
-                      style: AppTypography.h3.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    GridView.builder(
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 1.1,
-                          ),
-                      itemBuilder: (context, index) => CustomItemCardGridview(
-                        title: _stocksData[index].title,
-                        icon: _stocksData[index].icon,
-                        subtitle: _stocksData[index].subtitle,
-                        percentage: _stocksData[index].percentage,
-                        onTap: () => context.push(
-                          '/investment/${_stocksData[index].title}',
+                    ],
+                  ),
+                  SizedBox(height: AppSpacing.lg),
+                  CustomCard(
+                    children: [
+                      Text(
+                        'Tendencias del mercado',
+                        style: AppTypography.h3.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final crossAxisCount =
+                              AppBreakpoints.gridCrossAxisCount(context);
+                          return GridView.builder(
+                            itemCount: 5,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  childAspectRatio: 1.1,
+                                ),
+                            itemBuilder: (context, index) =>
+                                CustomItemCardGridview(
+                                  title: _stocksData[index].title,
+                                  icon: _stocksData[index].icon,
+                                  subtitle: _stocksData[index].subtitle,
+                                  percentage: _stocksData[index].percentage,
+                                  onTap: () => context.push(
+                                    '/investment/${_stocksData[index].title}',
+                                  ),
+                                ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/widget/loading_page.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
 import 'package:investment_fund/feature/profile/ui/profile_page.dart';
 import 'package:investment_fund/feature/stocks/ui/stocks_page.dart';
 import 'package:investment_fund/feature/lobby/provider/lobby_controller.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_bottom_navigation.dart';
+import 'package:investment_fund/feature/lobby/ui/widget/custom_navigation_rail.dart';
 
 class LobbyPage extends ConsumerStatefulWidget {
   const LobbyPage({super.key});
@@ -46,30 +48,53 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(lobbyControllerProvider).value!;
     final provider = ref.read(lobbyControllerProvider.notifier);
+    final useRail = AppBreakpoints.isDesktop(context);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: LoadingPage(
         isLoading: state.isLoading,
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: const BouncingScrollPhysics(),
-                onPageChanged: provider.changeIndexPage,
-                children: const [
-                  HomePage(),
-                  StocksPage(),
-                  _PlaceholderPage(title: 'Noticias'),
-                  ProfilePage(),
+        child: useRail
+            ? Row(
+                children: [
+                  CustomNavigationRail(
+                    selectedIndex: state.indexPage,
+                    onDestinationSelected: _onItemTapped,
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: provider.changeIndexPage,
+                      children: const [
+                        HomePage(),
+                        StocksPage(),
+                        _PlaceholderPage(title: 'Noticias'),
+                        ProfilePage(),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const BouncingScrollPhysics(),
+                      onPageChanged: provider.changeIndexPage,
+                      children: const [
+                        HomePage(),
+                        StocksPage(),
+                        _PlaceholderPage(title: 'Noticias'),
+                        ProfilePage(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
-      bottomNavigationBar: CustomBottomNavigation(
+      bottomNavigationBar: useRail ? null : CustomBottomNavigation(
         onTap: _onItemTapped,
         currentIndex: state.indexPage,
       ),

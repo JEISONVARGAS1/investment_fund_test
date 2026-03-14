@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 
 class CustomHeader extends StatelessWidget {
@@ -7,8 +8,10 @@ class CustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final expandedHeight = AppBreakpoints.isDesktop(context) ? 280.0 : 200.0;
+
     return SliverAppBar(
-      expandedHeight: 200,
+      expandedHeight: expandedHeight,
       floating: true,
       pinned: true,
       stretch: true,

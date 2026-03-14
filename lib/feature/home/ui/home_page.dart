@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
+import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/feature/home/provider/home_controller.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_header.dart';
@@ -76,66 +78,77 @@ class _HomePageState extends ConsumerState<HomePage> {
             ],
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const .all(8),
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  CustomCard(
-                    children: [
-                      Text(
-                        'Mis bienes',
-                        style: AppTypography.h3.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Column(
-                        children: List.generate(
-                          5,
-                          (index) => CustomItemCard(
-                            title: 'Apple',
-                            icon: Icons.apple,
-                            subtitle: '10 unit',
-                            price: '\$2.300.00',
-                            percentage: '+\$10.00 (10%)',
-                            onTap: () => context.push('/investment/Apple'),
+            child: ResponsiveContainer(
+              child: Padding(
+                padding: EdgeInsets.all(
+                  AppBreakpoints.horizontalPadding(context),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomCard(
+                      children: [
+                        Text(
+                          'Mis bienes',
+                          style: AppTypography.h3.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: AppSpacing.lg),
-                  CustomCard(
-                    children: [
-                      Text(
-                        'Choices Of Analysts',
-                        style: AppTypography.h3.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
+                        Column(
+                          children: List.generate(
+                            5,
+                            (index) => CustomItemCard(
+                              title: 'Apple',
+                              icon: Icons.apple,
+                              subtitle: '10 unit',
+                              price: '\$2.300.00',
+                              percentage: '+\$10.00 (10%)',
+                              onTap: () => context.push('/investment/Apple'),
+                            ),
+                          ),
                         ),
-                      ),
-                      GridView.builder(
-                        itemCount: 5,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.1,
+                      ],
+                    ),
+                    SizedBox(height: AppSpacing.lg),
+                    CustomCard(
+                      children: [
+                        Text(
+                          'Choices Of Analysts',
+                          style: AppTypography.h3.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        itemBuilder: (context, index) => CustomItemCardGridview(
-                          title: 'Apple',
-                          icon: Icons.apple,
-                          subtitle: '10 unit',
-                          percentage: '+\$10.00 (10%)',
-                          onTap: () => context.push('/investment/Apple'),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final crossAxisCount =
+                                AppBreakpoints.gridCrossAxisCount(context);
+                            return GridView.builder(
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                childAspectRatio: 1.1,
+                              ),
+                              itemBuilder: (context, index) =>
+                                  CustomItemCardGridview(
+                                title: 'Apple',
+                                icon: Icons.apple,
+                                subtitle: '10 unit',
+                                percentage: '+\$10.00 (10%)',
+                                onTap: () => context.push('/investment/Apple'),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
