@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
-import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
+import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/responsive_container.dart';
+import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_item_card_gridview.dart';
 
@@ -22,9 +22,7 @@ class StocksPage extends StatelessWidget {
           ),
           child: ResponsiveContainer(
             child: Padding(
-              padding: EdgeInsets.all(
-                AppBreakpoints.horizontalPadding(context),
-              ),
+              padding: .all(context.horizontalPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,8 +64,7 @@ class StocksPage extends StatelessWidget {
                       ),
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final crossAxisCount =
-                              AppBreakpoints.gridCrossAxisCount(context);
+                          final crossAxisCount = context.gridCrossAxisCount;
                           return GridView.builder(
                             itemCount: 5,
                             shrinkWrap: true,

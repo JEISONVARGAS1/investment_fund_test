@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:investment_fund/core/data/provider/global_controller.dart';
-import 'package:investment_fund/feature/home/data/home_api.dart';
+import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/feature/home/provider/model/home_state.dart';
 import 'package:investment_fund/feature/home/repositories/home_repository.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_controller.g.dart';
 
@@ -16,7 +16,9 @@ class HomeController extends _$HomeController {
 
   HomeRepository get api => ref.read(homeRepositoryProvider);
 
-  Future<void> initPage() async {}
+  Future<void> initPage(BuildContext context) async {
+    _setState(state.value!.copyWith(isDesktop: context.isDesktop));
+  }
 
   void _setState(HomeState newState) => state = AsyncValue.data(newState);
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:investment_fund/core/theme/app_breakpoints.dart';
+import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/feature/investment_detail/ui/widgets/detail_tabs.dart';
 import 'package:investment_fund/feature/investment_detail/ui/widgets/detail_app_bar.dart';
@@ -30,11 +30,9 @@ class _InvestmentDetailPageState extends ConsumerState<InvestmentDetailPage> {
           physics: const BouncingScrollPhysics(),
           child: ResponsiveContainer(
             child: Padding(
-              padding: EdgeInsets.all(
-                AppBreakpoints.horizontalPadding(context),
-              ),
+              padding: .all(context.horizontalPadding),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   DetailTabs(
                     tabs: const [

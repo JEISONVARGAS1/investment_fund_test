@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:investment_fund/core/theme/app_breakpoints.dart';
 import 'package:investment_fund/core/widget/loading_page.dart';
 import 'package:investment_fund/feature/home/ui/home_page.dart';
-import 'package:investment_fund/feature/profile/ui/profile_page.dart';
 import 'package:investment_fund/feature/stocks/ui/stocks_page.dart';
+import 'package:investment_fund/feature/profile/ui/profile_page.dart';
 import 'package:investment_fund/feature/lobby/provider/lobby_controller.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_bottom_navigation.dart';
 import 'package:investment_fund/feature/lobby/ui/widget/custom_navigation_rail.dart';
@@ -18,29 +17,11 @@ class LobbyPage extends ConsumerStatefulWidget {
 }
 
 class _LobbyPageState extends ConsumerState<LobbyPage> {
-  late final PageController _pageController;
-
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) => ref.read(lobbyControllerProvider.notifier).initPage(),
-    );
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onItemTapped(int index) {
-    ref.read(lobbyControllerProvider.notifier).changeIndexPage(index);
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      (_) => ref.read(lobbyControllerProvider.notifier).initPage(context),
     );
   }
 
@@ -48,24 +29,23 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(lobbyControllerProvider).value!;
     final provider = ref.read(lobbyControllerProvider.notifier);
-    final useRail = AppBreakpoints.isDesktop(context);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: LoadingPage(
         isLoading: state.isLoading,
-        child: useRail
+        child: state.isDesktop
             ? Row(
                 children: [
                   CustomNavigationRail(
                     selectedIndex: state.indexPage,
-                    onDestinationSelected: _onItemTapped,
+                    onDestinationSelected: provider.handledChangeIndexPage,
                   ),
                   Expanded(
                     child: PageView(
-                      controller: _pageController,
+                      controller: state.pageController,
                       physics: const NeverScrollableScrollPhysics(),
-                      onPageChanged: provider.changeIndexPage,
+                      onPageChanged: provider.handledChangeIndexPage,
                       children: const [
                         HomePage(),
                         StocksPage(),
@@ -76,28 +56,24 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
                   ),
                 ],
               )
-            : Column(
-                children: [
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      physics: const BouncingScrollPhysics(),
-                      onPageChanged: provider.changeIndexPage,
-                      children: const [
-                        HomePage(),
-                        StocksPage(),
-                        _PlaceholderPage(title: 'Noticias'),
-                        ProfilePage(),
-                      ],
-                    ),
-                  ),
+            : PageView(
+                controller: state.pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: provider.handledChangeIndexPage,
+                children: const [
+                  HomePage(),
+                  StocksPage(),
+                  _PlaceholderPage(title: 'Noticias'),
+                  ProfilePage(),
                 ],
               ),
       ),
-      bottomNavigationBar: useRail ? null : CustomBottomNavigation(
-        onTap: _onItemTapped,
-        currentIndex: state.indexPage,
-      ),
+      bottomNavigationBar: state.isDesktop
+          ? null
+          : CustomBottomNavigation(
+              currentIndex: state.indexPage,
+              onTap: provider.handledChangeIndexPage,
+            ),
     );
   }
 }

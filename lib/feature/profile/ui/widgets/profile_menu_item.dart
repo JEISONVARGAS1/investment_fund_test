@@ -12,10 +12,10 @@ class ProfileMenuItem extends StatelessWidget {
 
   const ProfileMenuItem({
     super.key,
+    this.onTap,
+    this.subtitle,
     required this.title,
     required this.icon,
-    this.subtitle,
-    this.onTap,
   });
 
   @override
@@ -29,7 +29,7 @@ class ProfileMenuItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
-            shape: BoxShape.circle,
+            shape: .circle,
             color: AppColors.primary,
           ),
           child: Icon(icon, color: AppColors.background),
@@ -37,8 +37,8 @@ class ProfileMenuItem extends StatelessWidget {
         SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .center,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 title,
@@ -46,18 +46,12 @@ class ProfileMenuItem extends StatelessWidget {
               ),
               if (subtitle != null) ...[
                 const SizedBox(height: 2),
-                Text(
-                  subtitle!,
-                  style: AppTypography.bodySmall,
-                ),
+                Text(subtitle!, style: AppTypography.bodySmall),
               ],
             ],
           ),
         ),
-        Icon(
-          Icons.chevron_right,
-          color: AppColors.textSecondary,
-        ),
+        Icon(Icons.chevron_right, color: AppColors.textSecondary),
       ],
     );
   }
