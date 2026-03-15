@@ -12,6 +12,29 @@ Aplicación multiplataforma para la gestión de inversiones y fondos de inversi�
 - **Navegación web**: URLs limpias con PathUrlStrategy para compartir y recargar rutas
 - **Internacionalización**: Soporte para español e inglés
 
+## Lógica de negocio
+
+### Flujo de inversión
+
+El proyecto inicia con un **saldo inicial** que el usuario puede utilizar para invertir. La lógica funciona así:
+
+1. **Saldo inicial**: El usuario comienza con un capital disponible (definido en la API, ej. 500.000 COP).
+
+2. **Compra de inversiones**: Al comprar un fondo, se descuenta del saldo disponible el monto de la inversión mínima del fondo. El usuario solo puede comprar si su saldo es mayor o igual a la inversión mínima requerida.
+
+3. **Venta de inversiones**: Al vender, el usuario puede **ganar o perder** dinero sobre lo que pagó por la inversión. El resultado depende de la simulación del mercado.
+
+### Método `simulateSell` (aleatorio)
+
+Se creó el método `simulateSell()` en `lib/core/util/simulate_sale.dart` para simular el resultado de una venta de forma **aleatoria**:
+
+- **Entrada**: El monto que el usuario pagó por la inversión (precio de compra).
+- **Salida**: El monto que recibe al vender (precio de venta simulado).
+- **Lógica**: Usa `Random` para determinar si hubo ganancia o pérdida (50% de probabilidad cada uno). Aplica un porcentaje aleatorio de variación (±50%) sobre el monto original.
+- **Resultado**: Si el monto de venta es mayor que el de compra → ganancia. Si es menor → pérdida. La diferencia se refleja en el saldo disponible y en el historial con indicadores visuales (verde/naranja/rojo).
+
+Este método permite simular la volatilidad del mercado de forma didáctica sin conectar a APIs reales.
+
 ## Stack tecnológico
 
 | Tecnología | Uso |
