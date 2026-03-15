@@ -15,6 +15,7 @@ class MarketTrends extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      height: context.isDesktop ? 400 : null,
       children: [
         Text(
           'Tendencias del mercado',

@@ -146,24 +146,78 @@ Se utiliza **Riverpod** como solución de state management:
 - Flutter 3.11+
 - Dart 3.11+
 
-## Instalación
+## Cómo ejecutar la aplicación
+
+La aplicación puede ejecutarse tanto en **web** como en **móvil** (iOS/Android). Sigue estos pasos:
+
+### 0. Clonar el repositorio (si aplica)
 
 ```bash
-# Clonar el repositorio
 git clone <repository-url>
 cd investment_fund
+```
 
-# Instalar dependencias
+### 1. Verificar el entorno Flutter
+
+Antes de ejecutar, asegúrate de que Flutter esté correctamente configurado:
+
+```bash
+flutter doctor
+```
+
+Este comando verifica que tengas instalados el SDK de Flutter, las herramientas de desarrollo y los dispositivos/emuladores disponibles. Corrige cualquier advertencia que aparezca antes de continuar.
+
+### 2. Instalar dependencias
+
+```bash
 flutter pub get
+```
 
-# Generar código (Riverpod, Freezed)
+Descarga todas las dependencias del proyecto definidas en `pubspec.yaml`.
+
+### 3. Generar código (Riverpod, Freezed)
+
+```bash
 dart run build_runner build --delete-conflicting-outputs
+```
 
-# Ejecutar en dispositivo/emulador
-flutter run
+Genera los providers de Riverpod y los modelos de Freezed.
 
-# Ejecutar en web
+### 4. Ejecutar la aplicación
+
+**En web (Chrome):**
+
+```bash
 flutter run -d chrome
+```
+
+**En móvil (dispositivo o emulador conectado):**
+
+```bash
+flutter run
+```
+
+Si tienes varios dispositivos conectados, especifica el destino:
+
+```bash
+# Listar dispositivos disponibles
+flutter devices
+
+# Ejecutar en un dispositivo específico
+flutter run -d <device_id>
+```
+
+**Ejemplos por plataforma:**
+
+```bash
+# Web
+flutter run -d chrome
+
+# Android (emulador o dispositivo)
+flutter run -d android
+
+# iOS (simulador o dispositivo, solo en macOS)
+flutter run -d ios
 ```
 
 ## Scripts útiles

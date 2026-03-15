@@ -38,7 +38,7 @@ class CustomMobilHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                moneyFormat(user.initialBalance.toDouble()),
+                moneyFormat(user.availableBalance.toDouble()),
                 style: AppTypography.h1.copyWith(
                   color: AppColors.background,
                   fontWeight: .bold,

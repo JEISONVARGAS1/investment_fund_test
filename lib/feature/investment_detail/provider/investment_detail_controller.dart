@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:investment_fund/core/util/constants.dart';
 import 'package:investment_fund/core/model/fund_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
@@ -83,7 +84,7 @@ class InvestmentDetailController extends _$InvestmentDetailController {
         context,
         amount: amount,
         newAmount: sellAmount,
-        onAccept: () => Navigator.of(context).pop(),
+        onAccept: () => context.pop(),
       );
     } else {
       _acceptToSell(sellAmount);
@@ -91,7 +92,7 @@ class InvestmentDetailController extends _$InvestmentDetailController {
         context,
         amount: amount,
         newAmount: sellAmount,
-        onAccept: () => Navigator.of(context).pop(),
+        onAccept: () => context.pop(),
       );
     }
   }
@@ -157,13 +158,11 @@ class InvestmentDetailController extends _$InvestmentDetailController {
   void _showInsufficientFundsDialog(BuildContext context) {
     InsufficientFundsDialog.show(
       context,
-      title: lossesTitle,
       color: AppColors.error,
+      onAccept: () =>context.pop(),
+      title: insufficientFundsTitle,
       message: insufficientFundsMessage,
       icon: Icons.account_balance_wallet_outlined,
-      onAccept: () {
-        Navigator.of(context).pop();
-      },
     );
   }
 

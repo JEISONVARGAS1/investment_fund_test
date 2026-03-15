@@ -3,7 +3,7 @@ import 'dart:math';
 double simulateSell(double amount) {
   final random = Random();
 
-  bool isProfit = random.nextDouble() < 0.5;
+  bool isProfit = random.nextDouble() < 0.7;
 
   double percentage;
 

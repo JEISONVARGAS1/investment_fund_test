@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:investment_fund/core/model/fund_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
-import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
-import 'package:investment_fund/core/widget/custom_item_card.dart';
 import 'package:investment_fund/core/widget/empty_widget.dart';
+import 'package:investment_fund/core/theme/app_typography.dart';
+import 'package:investment_fund/core/widget/custom_item_card.dart';
+import 'package:investment_fund/core/extension/context_extension.dart';
 
 class MyActions extends StatelessWidget {
   final List<FundModel> funds;
@@ -14,9 +15,10 @@ class MyActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      height: context.isDesktop ? 400 : null,
       children: [
         Text(
-          'Mis acciones',
+          'Top 5 acciones',
           style: AppTypography.h3.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w600,
