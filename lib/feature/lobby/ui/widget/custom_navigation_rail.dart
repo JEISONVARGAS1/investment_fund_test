@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/user_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 
 class CustomNavigationRail extends StatelessWidget {
+  final UserModel user;
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
 
   const CustomNavigationRail({
     super.key,
+    required this.user,
     required this.selectedIndex,
     required this.onDestinationSelected,
   });
@@ -156,14 +159,14 @@ class CustomNavigationRail extends StatelessWidget {
               crossAxisAlignment: .start,
               children: [
                 Text(
-                  'Usuario',
+                  user.name,
                   style: AppTypography.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 Text(
-                  'Cuenta activa',
+                  user.email,
                   style: AppTypography.caption.copyWith(
                     color: AppColors.success,
                     fontSize: 11,

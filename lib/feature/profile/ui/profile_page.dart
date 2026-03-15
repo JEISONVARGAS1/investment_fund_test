@@ -11,7 +11,7 @@ import 'package:investment_fund/feature/profile/provider/profile_controller.dart
 import 'package:investment_fund/feature/profile/ui/widgets/custom_web_profile_header.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/profile_menu_item.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/custom_small_card_item.dart';
-import 'package:investment_fund/feature/home/ui/widgets/custom_scroll_view_header.dart';
+import 'package:investment_fund/core/widget/custom_scroll_view_header.dart';
 import 'package:investment_fund/feature/profile/ui/widgets/custom_mobil_profile_header.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -33,6 +33,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(profileControllerProvider).value!;
+    
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -42,8 +44,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           CustomScrollViewHeader(
             isDesktop: context.isDesktop,
             child: context.isDesktop
-                ? CustomWebProfileHeader()
-                : CustomMobilProfileHeader(),
+                ? CustomWebProfileHeader(user: state.user)
+                : CustomMobilProfileHeader(user: state.user),
           ),
           SliverToBoxAdapter(
             child: ResponsiveContainer(

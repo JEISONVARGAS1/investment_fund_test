@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/user_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
+import 'package:investment_fund/core/util/handled_calculate_percent.dart';
+import 'package:investment_fund/core/util/money_format.dart';
 
 class CustomMobilHeader extends StatelessWidget {
-  const CustomMobilHeader({super.key});
+  final UserModel user;
+  const CustomMobilHeader({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +31,25 @@ class CustomMobilHeader extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               Text(
-                'Broker account',
-                style: AppTypography.bodyMedium.copyWith(
+                "Cuenta de inversión",
+                style: AppTypography.bodySmall.copyWith(
                   color: AppColors.background,
+                  fontWeight: .bold,
                 ),
               ),
               Text(
-                '\$8 900.16',
-                style: AppTypography.h1.copyWith(color: AppColors.background),
-              ),
-              Text(
-                '+\$800.14 (10%)',
-                style: AppTypography.bodyMedium.copyWith(
+                moneyFormat(user.initialBalance.toDouble()),
+                style: AppTypography.h1.copyWith(
                   color: AppColors.background,
+                  fontWeight: .bold,
+                ),
+              ),
+
+              Text(
+                '+${moneyFormat(user.availableBalance.toDouble())} (${handledCalculatePercent(user.initialBalance.toDouble(), user.availableBalance.toDouble())}%)',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.success,
+                  fontWeight: .bold,
                 ),
               ),
             ],

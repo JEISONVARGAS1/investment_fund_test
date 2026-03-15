@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/fund_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
+import 'package:investment_fund/core/util/money_format.dart';
 import 'package:investment_fund/core/widget/custom_card.dart';
 
 class DetailInfoCard extends StatelessWidget {
-  final String title;
-  final String price;
-  final IconData icon;
+  final Color? color;
+  final FundModel fund;
 
-  const DetailInfoCard({
-    super.key,
-    required this.title,
-    required this.price,
-    required this.icon,
-  });
+  const DetailInfoCard({super.key, required this.fund, this.color});
 
   @override
   Widget build(BuildContext context) {
+    final probabilityPercent =
+        (double.tryParse(fund.profitProbability) ?? 0) * 100;
+
     return CustomCard(
+      color: color,
       children: [
         Row(
+          spacing: AppSpacing.sm,
           children: [
             Container(
               padding: .all(5),
@@ -29,26 +30,28 @@ class DetailInfoCard extends StatelessWidget {
                 color: AppColors.primary,
               ),
               child: Icon(
-                Icons.apple,
+                fund.iconData,
                 size: AppSpacing.md,
                 color: AppColors.background,
               ),
             ),
-            SizedBox(width: AppSpacing.sm),
-            Text(
-              title,
-              style: AppTypography.h5.copyWith(color: AppColors.textPrimary),
+            Expanded(
+              child: Text(
+                fund.name,
+                maxLines: 1,
+                overflow: .ellipsis,
+                style: AppTypography.h5.copyWith(color: AppColors.textPrimary),
+              ),
             ),
-            Spacer(),
             Row(
               children: [
                 Icon(
-                  Icons.arrow_upward,
+                  Icons.trending_up,
                   size: AppSpacing.md,
                   color: AppColors.success,
                 ),
                 Text(
-                  '+10%',
+                  '${probabilityPercent.toStringAsFixed(0)}%',
                   style: AppTypography.bodySmall.copyWith(
                     color: AppColors.success,
                   ),
@@ -58,27 +61,26 @@ class DetailInfoCard extends StatelessWidget {
           ],
         ),
         Text(
-          price,
+          moneyFormat(fund.minInvestment.toDouble()),
           style: AppTypography.h3.copyWith(color: AppColors.textPrimary),
         ),
-
         const SizedBox(height: AppSpacing.lg),
         Row(
           children: [
             Expanded(
               child: _InfoColumn(
-                label: 'UPCOMING EARNINGS',
-                value: 'Aug 27',
-                subLabel: 'EPS',
-                subValue: '40,88',
+                label: 'TIPO',
+                value: fund.type,
+                subLabel: 'INVERSIÓN MÍNIMA',
+                subValue: moneyFormat(fund.minInvestment.toDouble()),
               ),
             ),
             Expanded(
               child: _InfoColumn(
-                label: 'MARKET CAP',
-                value: '4437.94B',
-                subLabel: 'DIV YIELD',
-                subValue: '2,03%',
+                label: 'MONEDA',
+                value: fund.currency,
+                subLabel: 'PROBABILIDAD',
+                subValue: '${(probabilityPercent).toStringAsFixed(0)}%',
               ),
             ),
           ],

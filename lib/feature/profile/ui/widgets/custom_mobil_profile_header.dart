@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/user_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 
 class CustomMobilProfileHeader extends StatelessWidget {
-  const CustomMobilProfileHeader({super.key});
+  final UserModel user;
+  const CustomMobilProfileHeader({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,14 @@ class CustomMobilProfileHeader extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Usuario',
+                user.name,
                 style: AppTypography.h5.copyWith(
                   fontWeight: .w600,
                   color: AppColors.background,
                 ),
               ),
               Text(
-                'usuario@email.com',
+                user.email,
                 style: AppTypography.bodyMedium.copyWith(
                   color: AppColors.background.withValues(alpha: 0.9),
                 ),

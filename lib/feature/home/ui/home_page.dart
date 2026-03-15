@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
-import 'package:investment_fund/core/widget/custom_card.dart';
-import 'package:investment_fund/core/theme/app_typography.dart';
 import 'package:investment_fund/core/widget/custom_search.dart';
 import 'package:investment_fund/core/widget/investment_charts.dart';
 import 'package:investment_fund/core/extension/context_extension.dart';
 import 'package:investment_fund/core/widget/responsive_container.dart';
 import 'package:investment_fund/core/widget/custom_parent_container.dart';
 import 'package:investment_fund/feature/home/provider/home_controller.dart';
-import 'package:investment_fund/feature/home/ui/widgets/custom_item_card.dart';
+import 'package:investment_fund/core/widget/custom_scroll_view_header.dart';
+import 'package:investment_fund/feature/home/ui/widgets/custom_investment_history.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_web_header.dart';
+import 'package:investment_fund/feature/home/ui/widgets/choices_of_analysts.dart';
 import 'package:investment_fund/feature/home/ui/widgets/custom_mobil_header.dart';
-import 'package:investment_fund/feature/home/ui/widgets/custom_scroll_view_header.dart';
-import 'package:investment_fund/feature/home/ui/widgets/custom_item_card_gridview.dart';
+import 'package:investment_fund/feature/home/ui/widgets/custom_my_belongings.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -47,7 +45,9 @@ class _HomePageState extends ConsumerState<HomePage> {
         slivers: [
           CustomScrollViewHeader(
             isDesktop: context.isDesktop,
-            child: context.isDesktop ? CustomWebHeader() : CustomMobilHeader(),
+            child: context.isDesktop
+                ? CustomWebHeader(user: state.user)
+                : CustomMobilHeader(user: state.user),
           ),
           SliverToBoxAdapter(
             child: ResponsiveContainer(
@@ -58,74 +58,30 @@ class _HomePageState extends ConsumerState<HomePage> {
                   crossAxisAlignment: .start,
                   mainAxisAlignment: .spaceBetween,
                   children: [
-                    CustomSearch(),
+                    CustomSearch(onChanged: provider.searchInvestmentsFunds),
                     CustomParentContainer(
                       crossAxisAlignment: .start,
                       mainAxisAlignment: .spaceBetween,
                       children: [
-                        CustomCard(
-                          children: [
-                            Text(
-                              'Mis bienes',
-                              style: AppTypography.h3.copyWith(
-                                color: AppColors.textPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Column(
-                              children: List.generate(
-                                state.filteredInvestmentsFunds.length,
-                                (index) {
-                                  final fund =
-                                      state.filteredInvestmentsFunds[index];
-                                  return CustomItemCardGridview(
-                                    fund: fund,
-                                    onTap: (name) =>
-                                        context.push('/investment/$name'),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                        CustomMyBelongings(
+                          fundsList: state.myFilteredInvestmentsFunds,
+                          onTap: (fund) => context.push(
+                            '/lobby/investment/${fund.name}',
+                            extra: fund,
+                          ),
                         ),
-                        CustomCard(
-                          children: [
-                            Text(
-                              'Choices Of Analysts',
-                              style: AppTypography.h3.copyWith(
-                                color: AppColors.textPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                return GridView.builder(
-                                  padding: .zero,
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      state.filteredInvestmentsFunds.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                        childAspectRatio: 1,
-                                        crossAxisCount:
-                                            context.gridCrossAxisCount,
-                                      ),
-                                  itemBuilder: (context, index) =>
-                                      CustomItemCardGridview(
-                                        fund: state
-                                            .filteredInvestmentsFunds[index],
-                                        onTap: (name) =>
-                                            context.push('/investment/$name'),
-                                      ),
-                                );
-                              },
-                            ),
-                          ],
+                        ChoicesOfAnalysts(
+                          funds: state.filteredInvestmentsFunds,
+                          onTap: (fund) => context.push(
+                            '/lobby/investment/${fund.name}',
+                            extra: fund,
+                          ),
                         ),
                       ],
                     ),
-
+                    CustomInvestmentHistory(
+                      investmentRecords: state.user.investmentRecords,
+                    ),
                     InvestmentCharts(),
                   ],
                 ),

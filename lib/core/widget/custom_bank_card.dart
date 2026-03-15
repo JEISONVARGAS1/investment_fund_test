@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/user_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
+import 'package:investment_fund/core/util/handled_calculate_percent.dart';
+import 'package:investment_fund/core/util/money_format.dart';
 
 class CustomBankCard extends StatelessWidget {
-  final String number;
+  final UserModel user;
 
-  const CustomBankCard({super.key, required this.number});
+  const CustomBankCard({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +114,7 @@ class CustomBankCard extends StatelessWidget {
                           crossAxisAlignment: .start,
                           children: [
                             Text(
-                              'Broker account',
+                              'Cuenta de inversión',
                               style: AppTypography.caption.copyWith(
                                 color: Colors.white.withValues(alpha: 0.7),
                                 fontSize: 11,
@@ -119,7 +122,7 @@ class CustomBankCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '\$ $number',
+                              moneyFormat(user.availableBalance.toDouble()),
                               style: AppTypography.h2.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -136,7 +139,7 @@ class CustomBankCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '+\$800.14 (10%)',
+                                  '+${moneyFormat(user.availableBalance.toDouble())} (${handledCalculatePercent(user.initialBalance.toDouble(), user.availableBalance.toDouble())}%)',
                                   style: AppTypography.bodySmall.copyWith(
                                     color: AppColors.success,
                                     fontWeight: FontWeight.w600,

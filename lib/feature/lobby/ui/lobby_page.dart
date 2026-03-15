@@ -39,6 +39,7 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
             ? Row(
                 children: [
                   CustomNavigationRail(
+                    user: state.user,
                     selectedIndex: state.indexPage,
                     onDestinationSelected: provider.handledChangeIndexPage,
                   ),
@@ -67,7 +68,7 @@ class _LobbyPageState extends ConsumerState<LobbyPage> {
                 ],
               ),
       ),
-      bottomNavigationBar: state.isDesktop
+      bottomNavigationBar: context.isDesktop
           ? null
           : CustomBottomNavigation(
               currentIndex: state.indexPage,

@@ -8,13 +8,18 @@ import 'package:investment_fund/core/widget/custom_card.dart';
 
 class CustomItemCardGridview extends StatelessWidget {
   final FundModel fund;
-  final Function(String name)? onTap;
-  const CustomItemCardGridview({super.key, required this.fund, required this.onTap});
+  final Function(FundModel fund)? onTap;
+
+  const CustomItemCardGridview({
+    super.key,
+    required this.fund,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      onTap: () => onTap?.call(fund.name),
+      onTap: () => onTap?.call(fund),
       color: AppColors.background.withOpacity(0.8),
       children: [
         Row(

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:investment_fund/core/extension/context_extension.dart';
+import 'package:investment_fund/core/data/provider/global_controller.dart';
 import 'package:investment_fund/feature/lobby/provider/model/lobby_state.dart';
 
 part 'lobby_controller.g.dart';
@@ -15,7 +15,11 @@ class LobbyController extends _$LobbyController {
   }
 
   Future<void> initPage(BuildContext context) async {
-    _setState(state.value!.copyWith(isDesktop: context.isDesktop));
+    ref.listen(globalControllerProvider, (previous, next) {
+      if (next.value != null) {
+        _setState(state.value!.copyWith(user: next.value!.user));
+      }
+    }, fireImmediately: true);
   }
 
   void disposePageController() {

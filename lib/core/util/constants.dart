@@ -1,12 +1,12 @@
 // Constants for the app
 import 'package:flutter/material.dart';
 import 'package:investment_fund/core/model/fund_model.dart';
+import 'package:investment_fund/core/util/money_format.dart';
 
 double get mobile => 600;
 double get tablet => 900;
 double get desktop => 900;
 double get maxContentWidth => 1200;
-
 
 /// images
 String get metricImage => 'assets/image/metric.png';
@@ -60,3 +60,16 @@ List<FundModel> get fundTypes => [
     name: "FPV_BTG_PACTUAL_DINAMICA",
   ),
 ];
+
+// alerts messages
+String get insufficientFundsTitle => 'Saldo insuficiente';
+String get insufficientFundsMessage =>
+    'Tu saldo disponible es menor que la inversión mínima requerida para este fondo.';
+
+String get lossesTitle => 'Pérdidas';
+String lossesMessage(double amount, double newAmount) =>
+    'Has vendido esta inversión con una desvalorización\n Compraste por ${moneyFormat(amount)} y vendiste por ${moneyFormat(newAmount)}.';
+
+String get successToSellTitle => 'Venta exitosa';
+String successToSellMessage(double amount, double newAmount) =>
+    'Has vendido esta inversión con una valorización\n Compraste por ${moneyFormat(amount)} y vendiste por ${moneyFormat(newAmount)}.';

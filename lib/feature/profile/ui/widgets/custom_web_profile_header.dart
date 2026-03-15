@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:investment_fund/core/model/user_model.dart';
 import 'package:investment_fund/core/theme/app_colors.dart';
 import 'package:investment_fund/core/theme/app_spacing.dart';
 import 'package:investment_fund/core/theme/app_typography.dart';
 
 class CustomWebProfileHeader extends StatelessWidget {
-  const CustomWebProfileHeader({super.key});
+  final UserModel user;
+  const CustomWebProfileHeader({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 380,
+        width: 400,
         constraints: const BoxConstraints(maxWidth: 420),
         decoration: BoxDecoration(
           borderRadius: .circular(AppSpacing.radiusLg),
@@ -134,7 +136,7 @@ class CustomWebProfileHeader extends StatelessWidget {
                           crossAxisAlignment: .start,
                           children: [
                             Text(
-                              'Usuario',
+                              user.name,
                               style: AppTypography.h5.copyWith(
                                 color: AppColors.textPrimary,
                                 fontWeight: FontWeight.bold,
@@ -142,41 +144,13 @@ class CustomWebProfileHeader extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'usuario@email.com',
+                              user.email,
                               style: AppTypography.bodySmall.copyWith(
                                 color: AppColors.textSecondary,
                               ),
                             ),
                             const SizedBox(height: AppSpacing.md),
-                            Container(
-                              padding: const .symmetric(
-                                horizontal: AppSpacing.sm,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.background,
-                                borderRadius: .circular(AppSpacing.radiusXs),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'ID: ',
-                                    style: AppTypography.caption.copyWith(
-                                      color: AppColors.textSecondary,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                  Text(
-                                    'INV-2024-4829',
-                                    style: AppTypography.label.copyWith(
-                                      color: AppColors.textPrimary,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                           
                             const SizedBox(height: 4),
                             Text(
                               'Válida hasta: 12/2025',
